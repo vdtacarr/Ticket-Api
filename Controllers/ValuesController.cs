@@ -23,6 +23,7 @@ namespace AdaYazılım.Controllers
         public IActionResult post([FromBody] Base data)
         {
             var result = _process.DoEverything(data);
+            // Ok function serializes the List<Response> to JSON
             return Ok(result);
 
         }

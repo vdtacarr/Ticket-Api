@@ -34,24 +34,35 @@ namespace AdaYazılım.Controllers
                     {
                         lst.Add(new Yerlesim { VagonAdi = rezervasyon.Value, KisiSayisi = rezervasyon.Key });
                         rspns.Add(new Response { RezervasyonYapilabilir = true, YerlesimAyrinti = lst });
-                        return rspns;
-                        count++;
                         break;
+                    }
+                    else
+                    {
+                        count++;
                     }
                    
                        
                    
                 }
                 // Eğer hiçbir vagonda yeterli boş yer yoksa burası çalışacak.
-
-                if(count == emptySeat.Count)
+                
+                if (count == emptySeat.Count)
                 {
                     List<Response> rspns2 = new List<Response>();
                     rspns2.Add(new Response{ RezervasyonYapilabilir = false, YerlesimAyrinti = new List<Yerlesim>() });
                     return rspns2;
                 }
+                else if(rspns.Count == 1)
+                {
+                    return rspns;
+                }
+                else
+                {
+                    return null;
+                }
+                
             }
-
+            //Sırayla ilk vagondan itibaren doldurmaya çalışacak.
             else if(sayi.KisilerFarkliVagonlaraYerlestirilebilir == true)
             {
                 List<Yerlesim> lst = new List<Yerlesim>();
@@ -62,12 +73,16 @@ namespace AdaYazılım.Controllers
                     {
                         rezervasyonSayi = rezervasyonSayi - rezervasyon.Key;
                         lst.Add(new Yerlesim { VagonAdi = rezervasyon.Value, KisiSayisi = rezervasyon.Key });
-                    } while (rezervasyonSayi >= 0);
+                    } while (rezervasyonSayi > 0);
 
 
                 }
                 rspns.Add(new Response { RezervasyonYapilabilir = true, YerlesimAyrinti = lst });
                 return rspns;
+            }
+            else
+            {
+                return null;
             }
             
         }
